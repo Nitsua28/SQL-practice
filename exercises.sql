@@ -1,7 +1,11 @@
 -- SQL excerises
 
+
+
+-- 3-3
+
 -- get all records from employee
-select * from "Employee"
+select * from "Employee";
 
 -- populate https://raw.githubusercontent.com/lerocha/chinook-database/master/ChinookDatabase/DataSources/Chinook_PostgreSql.sql
 -- get all records from employee with last name King
@@ -50,3 +54,23 @@ update "Customer" set "LastName"= 'Walter' where "LastName"= 'Mitchell';
 select * from "Customer";
 --  - Update name of artist in the Artist table “Creedence Clearwater Revival” to “CCR”
 update "Artist" set "Name" = 'CCR' where "Name" = 'Creedence Clearwater Revival'
+
+
+-- 3-6
+-- Joins
+    -- Create an inner join that joins customers and orders and specifies the name of the customer and the invoiceId
+	
+	select "FirstName", "LastName", "Invoice"."InvoiceId" from "Customer" inner join "Invoice" on "Customer"."CustomerId"  = "Invoice"."CustomerId";
+	-- Create an outer join that joins the customer and invoice table, specifying the CustomerId, firstname, lastname, invoiceId, and total.
+	select "Customer"."CustomerId", "FirstName", "LastName", "Invoice"."InvoiceId", "Invoice"."Total" from "Customer" full outer join "Invoice" on "Customer"."CustomerId"  = "Invoice"."CustomerId";
+    -- Create a right join that joins album and artist specifying artist name and title.
+	select "Name", "Album"."Title" from "Artist" right outer join "Album" on "Artist"."ArtistId" = "Album"."ArtistId";
+    -- Create a cross join that joins album and artist and sorts by artist name in ascending order.
+	select * from "Album" cross join "Artist" order by "Artist"."Name";
+    -- Perform a self-join on the employee table, joining on the reportsto column.
+	select e."FirstName", e."LastName" from "Employee" as e inner join "Employee" as e2 on e."ReportsTo" = e2."ReportsTo";
+	
+-- Set Operators
+    -- Use a unionall to create a table that has the name of all employees and customers
+	create table "AllNames" as select "Employee"."FirstName", "Employee"."LastName" from "Employee" union all select "Customer"."FirstName", "Customer"."LastName" from "Customer";
+	select * from "AllNames"; 
